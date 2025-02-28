@@ -1,0 +1,14 @@
+{
+  "redirects": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://project-playgroundfinder-api.onrender.com/:path*",
+      "statusCode": 200
+    },
+    {
+      "source": "/:path*",
+      "destination": "/index.html",
+      "statusCode": 200
+    }
+  ]
+}
