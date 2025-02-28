@@ -36,7 +36,7 @@ export const Activities = () => {
       <ActivitiesSection>
         <StyledPageTitle>Upcoming Feature: Activities</StyledPageTitle>
         <StyledText>
-          Soon, you'll find great tips for fun activities beyond playground visits! Whether it's raining, you're short on time, or just in the mood for something different, we’ll have plenty of ideas for you. Stay tuned!
+          Soon, you'll find great tips for fun activities beyond playground visits! Whether it's raining, you're short on time, or just in the mood for something different, we’ll have plenty of ideas for you. Stay tuned to find out more!
         </StyledText>
       </ActivitiesSection>
     </CenteredContainer>
