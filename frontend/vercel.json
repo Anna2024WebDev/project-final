@@ -1,13 +1,11 @@
 {
-  "routes": [
+  "redirects": [
     {
-      "src": "/api/(.*)",
-      "dest": "https://project-playgroundfinder-api.onrender.com/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html",
+      "permanent": true
     }
   ]
 }
+
 
