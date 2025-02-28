@@ -9,7 +9,7 @@ const HamburgerIcon = styled.div`
     display: flex;
     position: absolute;
     top: 1.5rem;
-    left: 1rem; 
+    right: 1rem; 
     width: 30px;
     height: 25px;
     flex-direction: column;
@@ -23,9 +23,8 @@ const HamburgerIcon = styled.div`
       border-radius: 4px;
       transition: all 0.3s ease-in-out;
     }
-  
 
-  div:nth-child(1) {
+    div:nth-child(1) {
       transform: ${({ $isOpen }) => ($isOpen ? "rotate(45deg) translate(7px, 7px)" : "none")};
     }
     
@@ -39,40 +38,37 @@ const HamburgerIcon = styled.div`
   }
 `;
 
-
+// MenuBox for the actual menu
 const MenuBox = styled.div` 
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #315a5c; 
-  width: 11rem;
-  height: 18rem;
+  position: fixed; 
+  top: 0;
+  right: 0;
+  background-color: #315a5c;
+  width: 100vw; 
+  height: 100vh; 
   padding: 0rem 0.5rem;
-  flex-direction: column;
-  align-items: flex-end;
   display: ${({ $isOpen }) => ($isOpen ? "block" : "none")};
   z-index: 1000;
   transition: all 0.3s ease-in-out;
-  padding: 0rem 0.5rem;
 
+  /* Center the menu content */
   ul {
     list-style: none;
-    padding-top: 30px;
-    text-align: center;
-    padding-bottom: 20px; 
+    padding-top: 70px; 
+    margin: 0;
+    text-align: center; 
   }
 
   li {
-    padding: 0.5rem 0rem;
+    padding: 1rem 0;
     font-size: 1.5rem;
 
     @media (max-width: 768px) {
-    font-size: 1.3rem; 
+      font-size: 1.3rem; 
     }
 
-    
     @media (max-width: 480px) {
-    font-size: 1.2rem; 
+      font-size: 1.2rem; 
     }
   }
 
@@ -81,9 +77,21 @@ const MenuBox = styled.div`
     text-decoration: none;
     font-weight: 300;
     font-family: "Poppins";
-  &:hover {
-    color: #E6FA54;
+    &:hover {
+      color: #E6FA54;
+    }
   }
+
+ 
+  .close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 4rem; 
+    color: #E6FA54; 
+    cursor: pointer;
+    z-index: 1001; 
+    display: ${({ $isOpen }) => ($isOpen ? "block" : "none")};
   }
 
   @media (min-width: 1001px) {
@@ -99,6 +107,11 @@ const MenuBox = styled.div`
 export const HamburgerMenu = () => {
   const { isMenuOpen, toggleMenu, closeMenu } = usePlaygroundStore();
 
+  // Handle menu close when an item is clicked
+  const handleLinkClick = () => {
+    closeMenu();
+  };
+
   return (
     <>
       <HamburgerIcon onClick={toggleMenu} $isOpen={isMenuOpen}>
@@ -108,24 +121,26 @@ export const HamburgerMenu = () => {
       </HamburgerIcon>
 
       <MenuBox $isOpen={isMenuOpen}>
-        {/* Close Button
-        <CloseButton onClick={closeMenu}>×</CloseButton> */}
+        {/* Close Button for the menu */}
+        <div className="close-button" onClick={closeMenu}>
+          &times; {/* Yellow "X" symbol for close */}
+        </div>
 
         <ul>
           <li>
-            <NavLink to="/" className={({ isActive }) => (isActive ? "active" : "")} aria-label="Go to Home page">Home</NavLink>
+            <NavLink to="/" onClick={handleLinkClick} className={({ isActive }) => (isActive ? "active" : "")} aria-label="Go to Home page">Home</NavLink>
           </li>
           <li>
-            <NavLink to="/login" className={({ isActive }) => (isActive ? "active" : "")} aria-label="Go to Login page">Login</NavLink>
+            <NavLink to="/login" onClick={handleLinkClick} className={({ isActive }) => (isActive ? "active" : "")} aria-label="Go to Login page">Login</NavLink>
           </li>
           <li>
-            <NavLink to="/profile" className={({ isActive }) => (isActive ? "active" : "")} aria-label="Go to Profile">Profile</NavLink>
+            <NavLink to="/profile" onClick={handleLinkClick} className={({ isActive }) => (isActive ? "active" : "")} aria-label="Go to Profile">Profile</NavLink>
           </li>
           <li>
-            <NavLink to="/activities" className={({ isActive }) => (isActive ? "active" : "")} aria-label="Go to Activities">Activities</NavLink>
+            <NavLink to="/activities" onClick={handleLinkClick} className={({ isActive }) => (isActive ? "active" : "")} aria-label="Go to Activities">Activities</NavLink>
           </li>
           <li>
-            <NavLink to="/about" className={({ isActive }) => (isActive ? "active" : "")} aria-label="About PlayGroundFinder">About</NavLink>
+            <NavLink to="/about" onClick={handleLinkClick} className={({ isActive }) => (isActive ? "active" : "")} aria-label="About PlayGroundFinder">About</NavLink>
           </li>
         </ul>
       </MenuBox>

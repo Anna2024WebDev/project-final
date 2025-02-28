@@ -31,7 +31,7 @@ const HeaderImg = styled.img`
     left: unset;
     margin: 0 auto;
     display: block;
-    padding: 5px 10px 0px 50px;
+    padding: 5px 40px 0px 0px;
   }
 
 
@@ -48,16 +48,9 @@ position: absolute;
   padding: 5px;
 
   @media (max-width: 1000px) {
-    left: unset;
-    margin: 0 auto;
-    display: block;
-    padding: 5px 10px 0px 50px;
+    display: none; /* Hide the image on smaller screens */
   }
 
-
-  @media  (max-width: 800px) {
-   display: none; 
-  }
 `;
 
 const Nav = styled.nav`
