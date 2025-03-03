@@ -87,11 +87,11 @@ export const Header = () => {
       <HeaderImg src={playground} alt="Playground Finder Logo" /><StyledImage src={playgroundImage} alt="playground image" />
       <Nav>
         <NavList>
-          <StyledNavLink to={routes.home} aria-label="Go to Home page">Home</StyledNavLink>
-          <StyledNavLink to={routes.login} aria-label="Go to Login page">Login</StyledNavLink>
-          <StyledNavLink to={routes.profile} aria-label="Go to Profile">Profile</StyledNavLink>
-          <StyledNavLink to={routes.activities} aria-label="Go to Activities">Activities</StyledNavLink>
-          <StyledNavLink to={routes.about} aria-label="About PlayGroundFinder">About</StyledNavLink>
+          <StyledNavLink to={routes.home} aria-label="Go to Home page">HOME</StyledNavLink>
+          <StyledNavLink to={routes.login} aria-label="Go to Login page">LOGIN</StyledNavLink>
+          <StyledNavLink to={routes.profile} aria-label="Go to Profile">PROFILE</StyledNavLink>
+          <StyledNavLink to={routes.activities} aria-label="Go to Activities">ACTIVITIES</StyledNavLink>
+          <StyledNavLink to={routes.about} aria-label="Go to about page">ABOUT</StyledNavLink>
         </NavList>
       </Nav>
       <HamburgerMenu />
