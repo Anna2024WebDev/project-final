@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { usePlaygroundStore } from "../stores/usePlaygroundStore";
+import playgroundImage from "../assets/playground2.png"
 
 const HamburgerIcon = styled.div`
   display: none; 
@@ -51,7 +52,6 @@ const MenuBox = styled.div`
   z-index: 1000;
   transition: all 0.3s ease-in-out;
 
-  /* Center the menu content */
   ul {
     list-style: none;
     padding-top: 80px; 
@@ -97,10 +97,26 @@ const MenuBox = styled.div`
   @media (min-width: 1001px) {
     display: none;
   }
+`;
+
+const ImageContainer = styled.div`
+display: flex;
+  justify-content: center; 
+  align-items: center; 
+  margin-top: 2rem; 
 
   @media (min-width: 768px) {
-    width: 14rem;
-    height: 19rem;
+    margin-top: 3rem; 
+  }
+`;
+
+const StyledImage = styled.img`
+  width: 7rem;
+  height: auto;
+  padding: 5px;
+
+  @media (min-width: 768px) {
+    width: 9rem; 
   }
 `;
 
@@ -143,6 +159,9 @@ export const HamburgerMenu = () => {
             <NavLink to="/about" onClick={handleLinkClick} className={({ isActive }) => (isActive ? "active" : "")} aria-label="About PlayGroundFinder">About</NavLink>
           </li>
         </ul>
+        <ImageContainer>
+          <StyledImage src={playgroundImage} alt="playground image" />
+        </ImageContainer>
       </MenuBox>
     </>
   );
