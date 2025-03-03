@@ -45,7 +45,7 @@ const SearchBarContainer = styled.div`
   background: white;
   opacity: 95%; 
   border-radius: 15px;
-  border: solid #315a5c; 
+  border: solid #F9629F; 
   &:hover{
     border: solid #E6FA54; 
   }

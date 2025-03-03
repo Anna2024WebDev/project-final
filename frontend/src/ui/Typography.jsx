@@ -10,7 +10,7 @@ export const Title = styled.h1`
   font-weight: 500;
   line-height: 1.2;
   margin-bottom: 1rem;
-  color: #FFF;
+  color: #ffb7c5;
 `;
 
 // Heading 2
@@ -20,7 +20,7 @@ export const PageTitle = styled.h2`
   font-weight: 400;
   line-height: 1.3;
   margin: 0; 
-  color: #FFF;
+  color: #ffb7c5;
 `;
 
 //Heading 3

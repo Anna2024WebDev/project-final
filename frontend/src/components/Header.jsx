@@ -68,6 +68,11 @@ const NavList = styled.ul`
   gap: 20px;
   margin: 0;
   padding: 0;
+
+  @media (max-width: 1300px) {
+    padding-left: 120px;
+  }
+
 `;
 
 const StyledNavLink = styled(NavLink)`
@@ -87,11 +92,11 @@ export const Header = () => {
       <HeaderImg src={playground} alt="Playground Finder Logo" /><StyledImage src={playgroundImage} alt="playground image" />
       <Nav>
         <NavList>
-          <StyledNavLink to={routes.home} aria-label="Go to Home page">HOME</StyledNavLink>
-          <StyledNavLink to={routes.login} aria-label="Go to Login page">LOGIN</StyledNavLink>
-          <StyledNavLink to={routes.profile} aria-label="Go to Profile">PROFILE</StyledNavLink>
-          <StyledNavLink to={routes.activities} aria-label="Go to Activities">ACTIVITIES</StyledNavLink>
-          <StyledNavLink to={routes.about} aria-label="Go to about page">ABOUT</StyledNavLink>
+          <StyledNavLink to={routes.home} aria-label="Go to Home page">Home</StyledNavLink>
+          <StyledNavLink to={routes.login} aria-label="Go to Login page">Login</StyledNavLink>
+          <StyledNavLink to={routes.profile} aria-label="Go to Profile">Profile</StyledNavLink>
+          <StyledNavLink to={routes.activities} aria-label="Go to Activities">Activities</StyledNavLink>
+          <StyledNavLink to={routes.about} aria-label="Go to about page">About</StyledNavLink>
         </NavList>
       </Nav>
       <HamburgerMenu />

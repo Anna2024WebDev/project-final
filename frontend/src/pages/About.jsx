@@ -69,7 +69,7 @@ export const About = () => {
   return (
     <CenteredContainer>
       <AboutSection>
-        <StyledPageTitle>About PlaygroundFinder</StyledPageTitle>
+        <StyledPageTitle>ABOUT US</StyledPageTitle>
         <StyledText>
           Welcome to PlaygroundFinder, your go-to app for discovering the best playgrounds near you! Whether you're a parent looking for a safe and fun place for your kids, or just someone who enjoys outdoor spaces, PlaygroundFinder helps you explore and find playgrounds with ease.
         </StyledText>

@@ -54,21 +54,21 @@ const MenuBox = styled.div`
   /* Center the menu content */
   ul {
     list-style: none;
-    padding-top: 70px; 
+    padding-top: 80px; 
     margin: 0;
     text-align: center; 
   }
 
   li {
     padding: 1rem 0;
-    font-size: 1.5rem;
+    font-size: 2rem;
 
     @media (max-width: 768px) {
-      font-size: 1.3rem; 
+      font-size: 1.7rem; 
     }
 
     @media (max-width: 480px) {
-      font-size: 1.2rem; 
+      font-size: 1.5rem; 
     }
   }
 

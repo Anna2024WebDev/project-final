@@ -139,7 +139,7 @@ export const LoginPage = () => {
 
   return (
     <FormContainer>
-      <StyledPageTitle>{isRegister ? "Register" : "Login"}</StyledPageTitle>
+      <StyledPageTitle>{isRegister ? "Register" : "LOGIN"}</StyledPageTitle>
       <StyledForm onSubmit={handleSubmit}>
         {isRegister && (
           <InputGroup>
