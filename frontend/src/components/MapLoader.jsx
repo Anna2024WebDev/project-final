@@ -205,6 +205,9 @@ export const MapLoader = ({ userLocation, playgrounds, searchQuery }) => {
           setMap(map);
           mapRef.current = map;
         }}
+        onUnmount={() => {
+          setMap(null); // Cleanup the map instance to avoid WebGL issues
+        }}
       />
     </MapContainer>
   );

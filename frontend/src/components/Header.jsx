@@ -1,10 +1,12 @@
-// Header.js
+import React, { useCallback } from "react"; // Ensure useCallback is imported
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import playground from "../assets/PlaygroundFinder_white.png";
-import playgroundImage from "../assets/playground.png"
+import playgroundImage from "../assets/playground.png";
 import { routes } from "../utils/routes";
 import { HamburgerMenu } from "./HamburgerMenu";
+import { usePlaygroundStore } from "../stores/usePlaygroundStore";
+import { shallow } from "zustand/shallow";
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -34,14 +36,13 @@ const HeaderImg = styled.img`
     padding: 5px 40px 0px 0px;
   }
 
-
-  @media  (max-width: 480px) {
-   width: 15rem; 
+  @media (max-width: 480px) {
+    width: 15rem; 
   }
 `;
 
 const StyledImage = styled.img`
-position: absolute;
+  position: absolute;
   right: 30px;
   width: 4rem;
   height: auto;
@@ -50,7 +51,6 @@ position: absolute;
   @media (max-width: 1000px) {
     display: none; /* Hide the image on smaller screens */
   }
-
 `;
 
 const Nav = styled.nav`
@@ -72,7 +72,6 @@ const NavList = styled.ul`
   @media (max-width: 1300px) {
     padding-left: 120px;
   }
-
 `;
 
 const StyledNavLink = styled(NavLink)`
@@ -87,23 +86,42 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 export const Header = () => {
+  // Directly select setSearchQuery from the store using shallow
+  const setSearchQuery = usePlaygroundStore((state) => state.setSearchQuery, shallow);
+
+  const handleHomeClick = useCallback(() => {
+    // Clear the persisted search query so that the homepage uses geolocation next time
+    setSearchQuery("");
+  }, [setSearchQuery]);
+
   return (
     <HeaderContainer>
-      <HeaderImg src={playground} alt="Playground Finder Logo" /><StyledImage src={playgroundImage} alt="playground image" />
+      <HeaderImg src={playground} alt="Playground Finder Logo" />
+      <StyledImage src={playgroundImage} alt="playground image" />
       <Nav>
         <NavList>
-          <StyledNavLink to={routes.home} aria-label="Go to Home page">Home</StyledNavLink>
-          <StyledNavLink to={routes.login} aria-label="Go to Login page">Login</StyledNavLink>
-          <StyledNavLink to={routes.profile} aria-label="Go to Profile">Profile</StyledNavLink>
-          <StyledNavLink to={routes.activities} aria-label="Go to Activities">Activities</StyledNavLink>
-          <StyledNavLink to={routes.about} aria-label="Go to about page">About</StyledNavLink>
+          <StyledNavLink
+            to={routes.home}
+            aria-label="Go to Home page"
+            onClick={handleHomeClick}
+          >
+            Home
+          </StyledNavLink>
+          <StyledNavLink to={routes.login} aria-label="Go to Login page">
+            Login
+          </StyledNavLink>
+          <StyledNavLink to={routes.profile} aria-label="Go to Profile">
+            Profile
+          </StyledNavLink>
+          <StyledNavLink to={routes.activities} aria-label="Go to Activities">
+            Activities
+          </StyledNavLink>
+          <StyledNavLink to={routes.about} aria-label="Go to about page">
+            About
+          </StyledNavLink>
         </NavList>
       </Nav>
       <HamburgerMenu />
     </HeaderContainer>
   );
 };
-
-
-
-

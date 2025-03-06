@@ -1,11 +1,12 @@
 import Lottie from "lottie-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { MapLoader } from "../components/MapLoader";
 import { getUserLocation } from "../hooks/getUserLocation";
 import { usePlaygroundStore } from "../stores/usePlaygroundStore";
 import loadingAnimation from "../assets/Animation - 1739129648764.json";
 import { Text } from "../ui/Typography";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const StyledText = styled(Text)`
   font-size: 1.6rem;
@@ -17,16 +18,15 @@ const StyledText = styled(Text)`
 `;
 
 const LoaderContainer = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center; 
-padding-top: 100px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+  padding-top: 100px; 
 
-@media (max-width: 480px) {
-  padding-top: 50px;
-   
-}
+  @media (max-width: 480px) {
+    padding-top: 50px;
+  }
 `;
 
 const SearchMapContainer = styled.div`
@@ -46,7 +46,7 @@ const SearchBarContainer = styled.div`
   opacity: 95%; 
   border-radius: 15px;
   border: solid #F9629F; 
-  &:hover{
+  &:hover {
     border: solid #E6FA54; 
   }
   padding: 8px 12px;
@@ -86,21 +86,77 @@ export const Homepage = () => {
   const [playgrounds, setPlaygrounds] = useState([]);
   const [address, setAddress] = useState("");
   const [isFetchingData, setIsFetchingData] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
   const isMenuOpen = usePlaygroundStore((state) => state.isMenuOpen);
+  const searchQuery = usePlaygroundStore((state) => state.searchQuery);
+  const setSearchQuery = usePlaygroundStore((state) => state.setSearchQuery);
+  const { search } = useLocation();
+  const navigate = useNavigate();
 
+  const queryParams = new URLSearchParams(search);
+  const searchQueryFromUrl = queryParams.get("search") || "";
+
+  // Update the store and local input if URL has a search query.
   useEffect(() => {
-    const fetchLocationAndPlaygrounds = async () => {
+    if (searchQueryFromUrl && searchQueryFromUrl !== searchQuery) {
+      console.log("Updating search query from URL:", searchQueryFromUrl);
+      setSearchQuery(searchQueryFromUrl);
+      setAddress(searchQueryFromUrl);
+    }
+  }, [searchQueryFromUrl, searchQuery, setSearchQuery]);
+
+  // Always fetch user location on mount so MapLoader can center the map.
+  useEffect(() => {
+    const fetchUserLocation = async () => {
       try {
         const location = await getUserLocation();
         setUserLocation(location);
+      } catch (error) {
+        console.error("Error fetching user location:", error.message);
+      }
+    };
+    fetchUserLocation();
+  }, []);
 
-        if (!location || !location.lat || !location.lng) {
-          throw new Error("Invalid location data");
+  // Fetch playgrounds based on search query (if available) or by location.
+  useEffect(() => {
+    setIsFetchingData(true);
+
+    const fetchPlaygroundsBySearch = async (query) => {
+      // Check localStorage for cached results.
+      const cacheKey = `playgroundResults_${query}`;
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        console.log("Using cached results for query:", query);
+        setPlaygrounds(JSON.parse(cached));
+        setIsFetchingData(false);
+        return;
+      }
+      console.log("Triggering API call for search query:", query);
+      try {
+        const radius = 2000;
+        const url = `https://project-playgroundfinder-api.onrender.com/api/playgrounds?name=${encodeURIComponent(query)}&radius=${radius}`;
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Failed to fetch playgrounds.");
         }
+        const data = await response.json();
+        setPlaygrounds(data || []);
+        // Cache the result
+        localStorage.setItem(cacheKey, JSON.stringify(data));
+      } catch (error) {
+        console.error("Search Error:", error.message);
+        alert("Failed to fetch playground data.");
+      } finally {
+        setIsFetchingData(false);
+      }
+    };
 
+    const fetchLocationAndPlaygrounds = async () => {
+      try {
+        if (!userLocation) throw new Error("User location not available");
+        const { lat, lng } = userLocation;
         const response = await fetch(
-          `https://project-playgroundfinder-api.onrender.com/api/playgrounds?lat=${location.lat}&lng=${location.lng}`,
+          `https://project-playgroundfinder-api.onrender.com/api/playgrounds?lat=${lat}&lng=${lng}`,
           {
             method: "GET",
             mode: "cors",
@@ -111,12 +167,10 @@ export const Homepage = () => {
             },
           }
         );
-
         if (!response.ok) {
           throw new Error(`Failed to fetch playgrounds: ${response.statusText}`);
         }
         const data = await response.json();
-
         if (Array.isArray(data)) {
           setPlaygrounds(data);
         } else {
@@ -129,49 +183,32 @@ export const Homepage = () => {
       }
     };
 
-    fetchLocationAndPlaygrounds();
-  }, []);
+    if (searchQuery) {
+      fetchPlaygroundsBySearch(searchQuery);
+    } else if (userLocation) {
+      fetchLocationAndPlaygrounds();
+    }
+  }, [searchQuery, userLocation]);
 
   const handleSearch = async () => {
     if (!address.trim()) {
       alert("Please enter a valid search term");
       return;
     }
-
+    // Persist the search query in the store.
     setSearchQuery(address);
+    console.log("Searching for playgrounds with address:", address);
+    // The effect above will trigger the API call or cache check.
+  };
 
-    try {
-      const radius = 2000;
-      const url = `https://project-playgroundfinder-api.onrender.com/api/playgrounds?name=${encodeURIComponent(address)}&radius=${radius}`;
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch playgrounds.");
-      }
-
-      const data = await response.json();
-      setPlaygrounds(data || []);
-      if (data.length > 0) {
-        const { coordinates } = data[0].location;
-        if (coordinates && coordinates.length === 2) {
-          setPlaygrounds((prevPlaygrounds) => [
-            ...prevPlaygrounds,
-            { coordinates: { lat: coordinates[1], lng: coordinates[0] } }
-          ]);
-        } else {
-          alert("Invalid coordinates in response.");
-        }
-      } else {
-        alert("No playgrounds found");
-      }
-    } catch (error) {
-      console.error("Search Error:", error.message);
-      alert("Failed to fetch playground data.");
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      handleSearch();
     }
   };
 
   if (isFetchingData) {
-
     return (
       <LoaderContainer>
         <StyledText>Loading Playground Map...</StyledText>
@@ -179,13 +216,6 @@ export const Homepage = () => {
       </LoaderContainer>
     );
   }
-
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      handleSearch(event);
-    }
-  };
 
   return (
     <SearchMapContainer>
