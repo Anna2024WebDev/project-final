@@ -41,13 +41,13 @@ const FormContainer = styled.div`
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
-  width: 90%;
+  width: 100%;
   gap: 12px;
   background: #315a5c; 
   border-radius: 15px; 
   padding: 20px; 
 
-  @media (max-width: 480px) {
+  @media (max-width: 350px) {
   width: 90%;
   }
 `;
@@ -139,7 +139,7 @@ export const LoginPage = () => {
 
   return (
     <FormContainer>
-      <StyledPageTitle>{isRegister ? "Register" : "LOGIN"}</StyledPageTitle>
+      <StyledPageTitle>{isRegister}</StyledPageTitle>
       <StyledForm onSubmit={handleSubmit}>
         {isRegister && (
           <InputGroup>

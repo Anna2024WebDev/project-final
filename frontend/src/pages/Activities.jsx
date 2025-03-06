@@ -8,8 +8,7 @@ const StyledPageTitle = styled(PageTitle)`
 
   @media (max-width: 480px) {
     padding: 40px 0px 7px;
-    font-size: 1.3rem; 
-    justify-content: left;
+    font-size: 1.6rem; 
   }
 `;
 

@@ -16,7 +16,7 @@ export const Title = styled.h1`
 // Heading 2
 export const PageTitle = styled.h2`
   font-family: ${primaryFont};
-  font-size: 1.6rem;
+  font-size: 2rem;
   font-weight: 400;
   line-height: 1.3;
   margin: 0; 
@@ -26,7 +26,7 @@ export const PageTitle = styled.h2`
 //Heading 3
 export const SubPageTitle = styled.h3`
 font-family: ${primaryFont};
-font-size: 1.3rem;
+font-size: 1.6rem;
 font-weight: 400;
 line-height: 1.4;
 color: #053332; 
@@ -35,7 +35,7 @@ color: #053332;
 // Paragraph text
 export const Text = styled.p`
 font-family: ${secondaryFont};
-font-size: 1rem;
+font-size: 1.2rem;
 font-weight: 400;
 line-height: 1.3;
 color: #FFF;
@@ -44,7 +44,7 @@ color: #FFF;
 //Small text
 export const SmallText = styled.span`
 font-family: ${secondaryFont};
-font-size: 0.8rem;
+font-size: 0.9rem;
 font-weight: 400;
 line-height: 1.3;
 color: #FFF;
