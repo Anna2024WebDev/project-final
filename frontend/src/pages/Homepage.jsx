@@ -244,9 +244,3 @@ export const Homepage = () => {
     </SearchMapContainer>
   );
 };
-
-
-const handleHomeClick = useCallback(() => {
-  // Clear the persisted search query so that the homepage uses geolocation next time
-  setSearchQuery("");
-}, [setSearchQuery]);
