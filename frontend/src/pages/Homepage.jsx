@@ -6,7 +6,7 @@ import { getUserLocation } from "../hooks/getUserLocation";
 import { usePlaygroundStore } from "../stores/usePlaygroundStore";
 import loadingAnimation from "../assets/Animation - 1739129648764.json";
 import { Text } from "../ui/Typography";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const StyledText = styled(Text)`
   font-size: 1.6rem;
@@ -90,7 +90,6 @@ export const Homepage = () => {
   const searchQuery = usePlaygroundStore((state) => state.searchQuery);
   const setSearchQuery = usePlaygroundStore((state) => state.setSearchQuery);
   const { search } = useLocation();
-  const navigate = useNavigate();
 
   const queryParams = new URLSearchParams(search);
   const searchQueryFromUrl = queryParams.get("search") || "";

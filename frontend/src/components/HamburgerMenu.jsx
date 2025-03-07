@@ -123,13 +123,15 @@ const StyledImage = styled.img`
 `;
 
 export const HamburgerMenu = () => {
-  // Directly select setSearchQuery from the store using shallow
-  const setSearchQuery = usePlaygroundStore((state) => state.setSearchQuery, shallow);
+  const { isMenuOpen, toggleMenu, closeMenu } = usePlaygroundStore();
+  const setSearchQuery = usePlaygroundStore((state) => state.setSearchQuery, shallow); // Directly select setSearchQuery from the store using shallow
+
   const handleHomeClick = useCallback(() => {
     // Clear the persisted search query so that the homepage uses geolocation next time
     setSearchQuery("");
-  }, [setSearchQuery]);
-  const { isMenuOpen, toggleMenu, closeMenu } = usePlaygroundStore();
+    closeMenu(); // Close the hamburger menu
+  }, [setSearchQuery, closeMenu]);
+
 
   // Handle menu close when an item is clicked
   const handleLinkClick = () => {
