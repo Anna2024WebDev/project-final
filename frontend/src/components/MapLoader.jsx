@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Marker from "../assets/Playground_marker.png";
-import LocationMarker from "../assets/Me_marker6.png";
+import Marker from "../assets/Playground_marker1.png";
+import LocationMarker from "../assets/Me_marker4.png";
 
 const libraries = ["marker", "places"];
 

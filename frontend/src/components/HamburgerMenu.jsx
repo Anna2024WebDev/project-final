@@ -1,7 +1,9 @@
-import styled from 'styled-components';
+import React, { useCallback } from "react"; // Ensure useCallback is imported
 import { NavLink } from 'react-router-dom';
+import styled from 'styled-components';
 import { usePlaygroundStore } from "../stores/usePlaygroundStore";
 import playgroundImage from "../assets/playground2.png"
+import { shallow } from 'zustand/shallow';
 
 const HamburgerIcon = styled.div`
   display: none; 
@@ -121,6 +123,12 @@ const StyledImage = styled.img`
 `;
 
 export const HamburgerMenu = () => {
+  // Directly select setSearchQuery from the store using shallow
+  const setSearchQuery = usePlaygroundStore((state) => state.setSearchQuery, shallow);
+  const handleHomeClick = useCallback(() => {
+    // Clear the persisted search query so that the homepage uses geolocation next time
+    setSearchQuery("");
+  }, [setSearchQuery]);
   const { isMenuOpen, toggleMenu, closeMenu } = usePlaygroundStore();
 
   // Handle menu close when an item is clicked
@@ -144,7 +152,7 @@ export const HamburgerMenu = () => {
 
         <ul>
           <li>
-            <NavLink to="/" onClick={handleLinkClick} className={({ isActive }) => (isActive ? "active" : "")} aria-label="Go to Home page">Home</NavLink>
+            <NavLink to="/" onClick={handleHomeClick} className={({ isActive }) => (isActive ? "active" : "")} aria-label="Go to Home page">Home</NavLink>
           </li>
           <li>
             <NavLink to="/login" onClick={handleLinkClick} className={({ isActive }) => (isActive ? "active" : "")} aria-label="Go to Login page">Login</NavLink>
