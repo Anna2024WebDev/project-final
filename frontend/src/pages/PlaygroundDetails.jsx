@@ -137,7 +137,7 @@ const StyledP = styled(Text)`
 export const PlaygroundDetails = () => {
   const [playground, setPlayground] = useState(null);
   const { user, postPlayground } = useUserStore();
-  const { ratePlayground } = usePlaygroundStore();
+  /* const { ratePlayground } = usePlaygroundStore(); */
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { playgroundId } = useParams();
@@ -145,6 +145,19 @@ export const PlaygroundDetails = () => {
 
   useEffect(() => {
     const fetchPlaygroundDetails = async () => {
+      //Check localStorage for cached results.
+      const cacheKey = `playgroundDetails_${playgroundId}`;
+      const cached = localStorage.getItem(cacheKey);
+
+      if (cached) {
+        console.log("Using cached results for playgroundId:", playgroundId);
+        setPlayground(JSON.parse(cached));
+        setLoading(false);
+        return;
+      }
+
+      console.log("Triggering API call for playgroundId:", playgroundId);
+
       try {
         setLoading(true);
         const response = await fetch(`https://project-playgroundfinder-api.onrender.com/api/playgrounds/id/${playgroundId}`);
@@ -152,6 +165,9 @@ export const PlaygroundDetails = () => {
           throw new Error('Failed to fetch playground details');
         }
         const data = await response.json();
+        /* Cache the result */
+        localStorage.setItem(cacheKey, JSON.stringify(data));
+
         setPlayground(data);
         setLoading(false);
       } catch (error) {
@@ -209,7 +225,6 @@ export const PlaygroundDetails = () => {
       </ImageSection>
       {playground.formatted_phone_number && (
         <Phone>
-          <p><strong>Phone number: </strong> <a href={`tel:${playground.formatted_phone_number}`}>{playground.formatted_phone_number}</a></p>
         </Phone>
       )}
       {playground.opening_hours ? (
@@ -239,7 +254,7 @@ export const PlaygroundDetails = () => {
         </Facilities>
         {playground.rating ? (
           <Rating>
-            <p><strong>Rating:</strong> {playground.rating.toFixed(1)} / 5</p>
+            <strong>Rating:</strong> {playground.rating.toFixed(1)} / 5
           </Rating>
         ) : (
           <StyledP>No ratings available.</StyledP>

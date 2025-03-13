@@ -6,7 +6,7 @@ import { Playground } from "../models/playground.js";
 
 export const router = express.Router();
 
-// Helper function to query Google Places API 
+// Helper function to query Google Places API
 export async function fetchGooglePlacesPlaygrounds(
   lat,
   lng,
@@ -15,7 +15,7 @@ export async function fetchGooglePlacesPlaygrounds(
   const coordinates =
     lat && lng ? `${lat},${lng}` : process.env.STOCKHOLM_COORDINATES;
 
-  //constructing the api dynamicly with the 
+  //constructing the api dynamically with the
   const apiUrl = process.env.GOOGLE_PLACES_URL.replace(
     "{LAT}",
     coordinates.split(",")[0]
@@ -32,11 +32,16 @@ export async function fetchGooglePlacesPlaygrounds(
     console.error("Error fetching from Google Places API:", error.message);
     throw new Error("Google Places API error");
   }
-};
+}
 
-//helper function to query by name using textsearch 
-export async function fetchGooglePlacesPlaygroundsByName(name, radius = process.env.DEFAULT_RADIUS) {
-  const apiUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(name)}+playground&radius=${radius}&key=${process.env.GOOGLE_API_KEY}`;
+//helper function to query by name using textsearch
+export async function fetchGooglePlacesPlaygroundsByName(
+  name,
+  radius = process.env.DEFAULT_RADIUS
+) {
+  const apiUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
+    name
+  )}+playground&radius=${radius}&key=${process.env.GOOGLE_API_KEY}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -45,7 +50,7 @@ export async function fetchGooglePlacesPlaygroundsByName(name, radius = process.
     console.error("Error fetching from Google Places API:", error.message);
     throw new Error("Google Places API error");
   }
-};
+}
 
 router.get("/", async (req, res) => {
   let { lat, lng, radius = 5000, name } = req.query;
@@ -101,7 +106,9 @@ router.get("/", async (req, res) => {
       });
 
       // Saving playgrounds to the database
-      const savedPlaygrounds = await Playground.insertMany(processedPlaygrounds);
+      const savedPlaygrounds = await Playground.insertMany(
+        processedPlaygrounds
+      );
 
       return res.json(savedPlaygrounds);
     }
@@ -130,9 +137,12 @@ router.get("/id/:place_id", async (req, res) => {
 
 router.post("/", authenticateUser, async (req, res) => {
   const { name, description, address, facilities, images, location } = req.body;
-  const validLocation = location && Array.isArray(location.coordinates) && location.coordinates.length === 2
-    ? location
-    : { type: "Point", coordinates: [0, 0] };
+  const validLocation =
+    location &&
+    Array.isArray(location.coordinates) &&
+    location.coordinates.length === 2
+      ? location
+      : { type: "Point", coordinates: [0, 0] };
   try {
     const newPlayground = new Playground({
       name,
@@ -149,7 +159,6 @@ router.post("/", authenticateUser, async (req, res) => {
       message: "Playground created successfully",
       playground: newPlayground,
     });
-    await newPlayground.save();
   } catch (error) {
     res
       .status(500)
@@ -157,7 +166,7 @@ router.post("/", authenticateUser, async (req, res) => {
   }
 });
 
-router.patch('/rate', async (req, res) => {
+router.patch("/rate", async (req, res) => {
   try {
     const { googlePlaceId, playgroundId, rating } = req.body;
 

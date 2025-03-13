@@ -7,6 +7,7 @@ import { routes } from "../utils/routes";
 import { HamburgerMenu } from "./HamburgerMenu";
 import { usePlaygroundStore } from "../stores/usePlaygroundStore";
 import { shallow } from "zustand/shallow";
+import { useEffect } from "react";
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -88,6 +89,10 @@ const StyledNavLink = styled(NavLink)`
 export const Header = () => {
   // Directly select setSearchQuery from the store using shallow
   const setSearchQuery = usePlaygroundStore((state) => state.setSearchQuery, shallow);
+
+  useEffect(() => {
+    setSearchQuery(""); // Clears search query on page reload
+  }, [setSearchQuery]);
 
   const handleHomeClick = useCallback(() => {
     // Clear the persisted search query so that the homepage uses geolocation next time
