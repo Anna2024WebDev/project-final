@@ -17,6 +17,23 @@ if (!mongoUrl) {
   throw new Error("MONGO_URL is not defined");
 }
 
+const connectToMongoDB = async () => {
+  try {
+    await mongoose.connect(mongoUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      poolSize: 10, //Connection pooling, maintaining a pool of open database connections that can be reused rather than creating a new connection each time one is needed.
+    });
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+    process.exit(1);
+  }
+};
+
+//  Call the function to connect to MongoDB before starting the server
+connectToMongoDB();
+
 const port = process.env.PORT || 9000;
 const app = express();
 
